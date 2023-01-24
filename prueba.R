@@ -66,7 +66,10 @@ server <- function(input, output) {
       {if (!input$position_last) filter(., key!='au_last') else filter(.)} %>%
       
       ggplot(aes(x = p_age, y = value, colour = key)) +
-      geom_line()
+      geom_line() +
+      scale_colour_discrete(breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
+                            labels=c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author")) +
+      scale_linetype_manual(values = c(rep("solid", 5), rep("dashed", 3)))
   })
 }
 
