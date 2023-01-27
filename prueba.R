@@ -32,23 +32,23 @@ df_grouped_number_authors <- aggregate(cbind(wrote_paper, analyzed_data, conceiv
 ui <- navbarPage(
   
   # Application title
-  theme = shinytheme("paper"),
+  theme = shinytheme("lumen"),
   title="Contributions Types in Science",
   
   # Tab panels
-  tabPanel("contribution_position_age",
+  tabPanel("By age",
   h2("Contribution type and author position by academic age"),
   sidebarLayout(
     sidebarPanel(
-      h5("Academic age"),
-      sliderInput("age", label = "prueba", min = 1, max = 25, value = c(10, 15)),
-      h5("Contribution type"),
+      h4("Academic age"),
+      sliderInput("age", min = 1, max = 25, value = c(10, 15)),
+      h4("Contribution type"),
       checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
       checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
       checkboxInput("contribution_CE", label = "Conceived experiments", value = TRUE),
       checkboxInput("contribution_CT", label = "Contributed tools", value = TRUE),
       checkboxInput("contribution_PE", label = "Performed experiments", value = TRUE),
-      h5("Author position"),
+      h4("Author position"),
       checkboxInput("position_first", label = "1st author", value = TRUE),
       checkboxInput("position_middle", label = "2nd/middle author", value = TRUE),
       checkboxInput("position_last", label = "Last author", value = TRUE)),
@@ -59,19 +59,19 @@ ui <- navbarPage(
     )
   ),
 
-  tabPanel("contribution_position_number_authors",
+  tabPanel("By number of authors",
   h2("Contribution type and author position by number of authors"),
   sidebarLayout(
     sidebarPanel(
-      h5("Number of authors"),
-      sliderInput("number_authors", label = "prueba", min = 2, max = 93, value = c(20, 50)),
-      h5("Contribution type"),
+      h4("Number of authors"),
+      sliderInput("number_authors", min = 2, max = 93, value = c(20, 50)),
+      h4("Contribution type"),
       checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
       checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
       checkboxInput("contribution_CE", label = "Conceived experiments", value = TRUE),
       checkboxInput("contribution_CT", label = "Contributed tools", value = TRUE),
       checkboxInput("contribution_PE", label = "Performed experiments", value = TRUE),
-      h5("Author position"),
+      h4("Author position"),
       checkboxInput("position_first", label = "1st author", value = TRUE),
       checkboxInput("position_middle", label = "2nd/middle author", value = TRUE),
       checkboxInput("position_last", label = "Last author", value = TRUE)),
