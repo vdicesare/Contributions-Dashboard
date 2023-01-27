@@ -40,8 +40,7 @@ ui <- navbarPage(
   h2("Contribution type and author position by academic age"),
   sidebarLayout(
     sidebarPanel(
-      h4("Academic age"),
-      sliderInput("age", min = 1, max = 25, value = c(10, 15)),
+      sliderInput("age", label = h4("Academic age"), min = 1, max = 25, value = c(10, 15)),
       h4("Contribution type"),
       checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
       checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
@@ -63,8 +62,7 @@ ui <- navbarPage(
   h2("Contribution type and author position by number of authors"),
   sidebarLayout(
     sidebarPanel(
-      h4("Number of authors"),
-      sliderInput("number_authors", min = 2, max = 93, value = c(20, 50)),
+      sliderInput("number_authors", label = h4("Number of authors"), min = 2, max = 46, value = c(15, 30)),
       h4("Contribution type"),
       checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
       checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
