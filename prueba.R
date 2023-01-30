@@ -108,19 +108,24 @@ ui <- navbarPage(
   tabPanel("About",
   h2("About"),
   fluidRow(column(width=12,
-    HTML('The visualizations and data available here are part of the work <b>Towards a Science of Humanities: How Big Data can solve the limitations of scientometrics</b>, developed as part of the project <a href="https://compare-project.eu/about/"><b>COntextual Mapping of academic Pathways Analysis for Research Evaluation (COMPARE)</b></a> – PID2020-117007RA-I00.'),
-    HTML('Preliminary results were presented in the work in progress <a href="https://doi.org/10.5281/zenodo.5793175"><b>Big Data and the birth of a Science of the Humanities</b></a> at the <i>1st International Conference on Humanities and Big Data in Ibero-America</i> organized by IberLab UGR which took place on 16-17th December, 2021 in Granada. The final results of this study will be published in a forthcoming book titled <b>Humanities and Big Data in Ibero-America</b> to be published by De Gruyter, and edited by Ana Gallego-Cuiñas and Daniel Torres-Salinas.'),
+    HTML("The visualizations and data available here are part of the work <a href='https://doi.org/10.5281/zenodo.6974732'><b>The relation between contribution statements and academic age</b></a>, developed as part of the project <a href='https://compare-project.eu/about/'><b>COntextual Mapping of academic Pathways Analysis for Research Evaluation (COMPARE)</b></a> – PID2020-117007RA-I00."),
+    HTML("Preliminary results were presented at the <i>26th International Conference on Science and Technology Indicators: From Local Indicators to Global Applications</i> organized by the Faculty of Communication and Documentation (UGR) in collaboration with the European Network of Indicator Developers (ENID), which took place on 7-9th September, 2022, in Granada."),
   h2("Authors"),
   fluidRow(
     column(width=6,
-      h3("Victoria Di Césare"),
-        HTML("...")),
+      h3("Manuel Escabias"),
+        HTML("Completar")),
     column(width=6,
       h3("Nicolás Robinson-García"),
-        HTML('Nicolas Robinson-Garcia is a researcher in the field of bibliometrics and research evaluation. He currently enjoys a Ramón y Cajal grant at the University of Granada (Spain). He worked previously as a Marie Sklodowska-Curie Fellow at Delft Institute of Applied Mathematics, TU Delft (Netherlands), the School of Public Policy at Georgia Institute of Technology and at INGENIO (CSIC-UPV) in Spain. He holds a PhD on Social Sciences at the University of Granada. He is member of the Steering Committee of the European Summer School for Scientometrics. He is Associate Editor on Open Science and New Metrics of the journal Scientometrics and member of the editorial board of Research Evaluation and Quantitative Science Studies.'))),
+        HTML('Nicolás Robinson-García is a researcher in the field of bibliometrics and research evaluation. He currently enjoys a Ramón y Cajal grant at the University of Granada (Spain). He worked previously as a Marie Sklodowska-Curie Fellow at Delft Institute of Applied Mathematics, TU Delft (Netherlands), the School of Public Policy at Georgia Institute of Technology and at INGENIO (CSIC-UPV) in Spain. He holds a PhD on Social Sciences at the University of Granada. He is member of the Steering Committee of the European Summer School for Scientometrics. He is Associate Editor on Open Science and New Metrics of the journal Scientometrics and member of the editorial board of Research Evaluation and Quantitative Science Studies.'))),
+  fluidRow(column(width=12,
+    tags$div(
+      tags$img(src = 'https://raw.githubusercontent.com/Wences91/science-of-humanities/main/images/compare_logo.png', width=150, style='padding-right:25px'),
+      tags$img(src = 'https://raw.githubusercontent.com/Wences91/science-of-humanities/main/images/ugr_logo.png', height=50, style='padding-right:25px'),
+      style='padding-top:75px;text-align:right')))
       )
     )
-  ),
+  )
 ) 
 
 # Server logic
