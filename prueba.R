@@ -103,11 +103,25 @@ ui <- navbarPage(
      plotOutput("contribution_position")
      )
     )
-  )
+  ),
 
-  #ABOUT PANEL
-
-)
+  tabPanel("About",
+  h2("About"),
+  fluidRow(column(width=12,
+    HTML('The visualizations and data available here are part of the work <b>Towards a Science of Humanities: How Big Data can solve the limitations of scientometrics</b>, developed as part of the project <a href="https://compare-project.eu/about/"><b>COntextual Mapping of academic Pathways Analysis for Research Evaluation (COMPARE)</b></a> – PID2020-117007RA-I00.'),
+    HTML('Preliminary results were presented in the work in progress <a href="https://doi.org/10.5281/zenodo.5793175"><b>Big Data and the birth of a Science of the Humanities</b></a> at the <i>1st International Conference on Humanities and Big Data in Ibero-America</i> organized by IberLab UGR which took place on 16-17th December, 2021 in Granada. The final results of this study will be published in a forthcoming book titled <b>Humanities and Big Data in Ibero-America</b> to be published by De Gruyter, and edited by Ana Gallego-Cuiñas and Daniel Torres-Salinas.'),
+  h2("Authors"),
+  fluidRow(
+    column(width=6,
+      h3("Victoria Di Césare"),
+        HTML("...")),
+    column(width=6,
+      h3("Nicolás Robinson-García"),
+        HTML('Nicolas Robinson-Garcia is a researcher in the field of bibliometrics and research evaluation. He currently enjoys a Ramón y Cajal grant at the University of Granada (Spain). He worked previously as a Marie Sklodowska-Curie Fellow at Delft Institute of Applied Mathematics, TU Delft (Netherlands), the School of Public Policy at Georgia Institute of Technology and at INGENIO (CSIC-UPV) in Spain. He holds a PhD on Social Sciences at the University of Granada. He is member of the Steering Committee of the European Summer School for Scientometrics. He is Associate Editor on Open Science and New Metrics of the journal Scientometrics and member of the editorial board of Research Evaluation and Quantitative Science Studies.'))),
+      )
+    )
+  ),
+) 
 
 # Server logic
 server <- function(input, output) {
