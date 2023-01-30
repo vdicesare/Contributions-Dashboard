@@ -50,15 +50,15 @@ ui <- navbarPage(
     sidebarPanel(
       sliderInput("age", label = h4("Academic age"), min = 1, max = 25, value = c(10, 15)),
       h4("Contribution type"),
-      checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
-      checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
-      checkboxInput("contribution_CE", label = "Conceived experiments", value = TRUE),
-      checkboxInput("contribution_CT", label = "Contributed tools", value = TRUE),
-      checkboxInput("contribution_PE", label = "Performed experiments", value = TRUE),
+      checkboxInput("contribution_WR1", label = "Wrote paper", value = TRUE),
+      checkboxInput("contribution_AD1", label = "Analyzed data", value = TRUE),
+      checkboxInput("contribution_CE1", label = "Conceived experiments", value = TRUE),
+      checkboxInput("contribution_CT1", label = "Contributed tools", value = TRUE),
+      checkboxInput("contribution_PE1", label = "Performed experiments", value = TRUE),
       h4("Author position"),
-      checkboxInput("position_first", label = "1st author", value = TRUE),
-      checkboxInput("position_middle", label = "2nd/middle author", value = TRUE),
-      checkboxInput("position_last", label = "Last author", value = TRUE)),
+      checkboxInput("position_first1", label = "1st author", value = TRUE),
+      checkboxInput("position_middle1", label = "2nd/middle author", value = TRUE),
+      checkboxInput("position_last1", label = "Last author", value = TRUE)),
     
     mainPanel(
       plotOutput("contribution_position_age")
@@ -72,15 +72,15 @@ ui <- navbarPage(
     sidebarPanel(
       sliderInput("number_authors", label = h4("Number of authors"), min = 2, max = 46, value = c(15, 30)),
       h4("Contribution type"),
-      checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
-      checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
-      checkboxInput("contribution_CE", label = "Conceived experiments", value = TRUE),
-      checkboxInput("contribution_CT", label = "Contributed tools", value = TRUE),
-      checkboxInput("contribution_PE", label = "Performed experiments", value = TRUE),
+      checkboxInput("contribution_WR2", label = "Wrote paper", value = TRUE),
+      checkboxInput("contribution_AD2", label = "Analyzed data", value = TRUE),
+      checkboxInput("contribution_CE2", label = "Conceived experiments", value = TRUE),
+      checkboxInput("contribution_CT2", label = "Contributed tools", value = TRUE),
+      checkboxInput("contribution_PE2", label = "Performed experiments", value = TRUE),
       h4("Author position"),
-      checkboxInput("position_first", label = "1st author", value = TRUE),
-      checkboxInput("position_middle", label = "2nd/middle author", value = TRUE),
-      checkboxInput("position_last", label = "Last author", value = TRUE)),
+      checkboxInput("position_first2", label = "1st author", value = TRUE),
+      checkboxInput("position_middle2", label = "2nd/middle author", value = TRUE),
+      checkboxInput("position_last2", label = "Last author", value = TRUE)),
              
     mainPanel(
       plotOutput("contribution_position_number_authors")
@@ -93,11 +93,11 @@ ui <- navbarPage(
   sidebarLayout(
     sidebarPanel(
       h4("Contribution type"),
-      checkboxInput("contribution_WR", label = "Wrote paper", value = TRUE),
-      checkboxInput("contribution_AD", label = "Analyzed data", value = TRUE),
-      checkboxInput("contribution_CE", label = "Conceived experiments", value = TRUE),
-      checkboxInput("contribution_CT", label = "Contributed tools", value = TRUE),
-      checkboxInput("contribution_PE", label = "Performed experiments", value = TRUE)),
+      checkboxInput("contribution_WR3", label = "Wrote paper", value = TRUE),
+      checkboxInput("contribution_AD3", label = "Analyzed data", value = TRUE),
+      checkboxInput("contribution_CE3", label = "Conceived experiments", value = TRUE),
+      checkboxInput("contribution_CT3", label = "Contributed tools", value = TRUE),
+      checkboxInput("contribution_PE3", label = "Performed experiments", value = TRUE)),
              
     mainPanel(
      plotOutput("contribution_position")
@@ -116,14 +116,14 @@ server <- function(input, output) {
     gather(data = df_grouped_age[which(df_grouped_age$p_age >= input$age[1] & df_grouped_age$p_age <= input$age[2]),],
            key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) %>%
       
-      {if (!input$contribution_WR) filter(., key!='wrote_paper') else filter(.)} %>%
-      {if (!input$contribution_AD) filter(., key!='analyzed_data') else filter(.)} %>%
-      {if (!input$contribution_CE) filter(., key!='conceived_experiments') else filter(.)} %>%
-      {if (!input$contribution_CT) filter(., key!='contributed_tools') else filter(.)} %>%
-      {if (!input$contribution_PE) filter(., key!='performed_experiments') else filter(.)} %>%
-      {if (!input$position_first) filter(., key!='au_first') else filter(.)} %>%
-      {if (!input$position_middle) filter(., key!='au_middle') else filter(.)} %>%
-      {if (!input$position_last) filter(., key!='au_last') else filter(.)} %>%
+      {if (!input$contribution_WR1) filter(., key!='wrote_paper') else filter(.)} %>%
+      {if (!input$contribution_AD1) filter(., key!='analyzed_data') else filter(.)} %>%
+      {if (!input$contribution_CE1) filter(., key!='conceived_experiments') else filter(.)} %>%
+      {if (!input$contribution_CT1) filter(., key!='contributed_tools') else filter(.)} %>%
+      {if (!input$contribution_PE1) filter(., key!='performed_experiments') else filter(.)} %>%
+      {if (!input$position_first1) filter(., key!='au_first') else filter(.)} %>%
+      {if (!input$position_middle1) filter(., key!='au_middle') else filter(.)} %>%
+      {if (!input$position_last1) filter(., key!='au_last') else filter(.)} %>%
       
       ggplot() +
       geom_line(aes(x = p_age, y = value, colour = key, linetype = key)) +
@@ -141,14 +141,14 @@ server <- function(input, output) {
     gather(data = df_grouped_number_authors[which(df_grouped_number_authors$n_authors >= input$number_authors[1] & df_grouped_number_authors$n_authors <= input$number_authors[2]),],
            key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) %>%
       
-      {if (!input$contribution_WR) filter(., key!='wrote_paper') else filter(.)} %>%
-      {if (!input$contribution_AD) filter(., key!='analyzed_data') else filter(.)} %>%
-      {if (!input$contribution_CE) filter(., key!='conceived_experiments') else filter(.)} %>%
-      {if (!input$contribution_CT) filter(., key!='contributed_tools') else filter(.)} %>%
-      {if (!input$contribution_PE) filter(., key!='performed_experiments') else filter(.)} %>%
-      {if (!input$position_first) filter(., key!='au_first') else filter(.)} %>%
-      {if (!input$position_middle) filter(., key!='au_middle') else filter(.)} %>%
-      {if (!input$position_last) filter(., key!='au_last') else filter(.)} %>%
+      {if (!input$contribution_WR2) filter(., key!='wrote_paper') else filter(.)} %>%
+      {if (!input$contribution_AD2) filter(., key!='analyzed_data') else filter(.)} %>%
+      {if (!input$contribution_CE2) filter(., key!='conceived_experiments') else filter(.)} %>%
+      {if (!input$contribution_CT2) filter(., key!='contributed_tools') else filter(.)} %>%
+      {if (!input$contribution_PE2) filter(., key!='performed_experiments') else filter(.)} %>%
+      {if (!input$position_first2) filter(., key!='au_first') else filter(.)} %>%
+      {if (!input$position_middle2) filter(., key!='au_middle') else filter(.)} %>%
+      {if (!input$position_last2) filter(., key!='au_last') else filter(.)} %>%
       
       ggplot() +
       geom_line(aes(x = n_authors, y = value, colour = key, linetype = key)) +
@@ -165,21 +165,18 @@ server <- function(input, output) {
   output$contribution_position <- renderPlot({
     gather(data = df_grouped_position, key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments) %>%
       
-      {if (!input$contribution_WR) filter(., key!='wrote_paper') else filter(.)} %>%
-      {if (!input$contribution_AD) filter(., key!='analyzed_data') else filter(.)} %>%
-      {if (!input$contribution_CE) filter(., key!='conceived_experiments') else filter(.)} %>%
-      {if (!input$contribution_CT) filter(., key!='contributed_tools') else filter(.)} %>%
-      {if (!input$contribution_PE) filter(., key!='performed_experiments') else filter(.)} %>%
+      {if (!input$contribution_WR3) filter(., key!='wrote_paper') else filter(.)} %>%
+      {if (!input$contribution_AD3) filter(., key!='analyzed_data') else filter(.)} %>%
+      {if (!input$contribution_CE3) filter(., key!='conceived_experiments') else filter(.)} %>%
+      {if (!input$contribution_CT3) filter(., key!='contributed_tools') else filter(.)} %>%
+      {if (!input$contribution_PE3) filter(., key!='performed_experiments') else filter(.)} %>%
       
-      ggplot() +
-      geom_bar(aes(x = au_position, colour = key, linetype = key)) +
+      ggplot(aes(x = au_position, y = value, fill = key)) +
+      geom_bar(stat = "identity", position = "dodge") +
       theme_minimal() +
       xlab("Author position") +
       ylab("Count") +
-      scale_colour_discrete("References", breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments"),
-                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments")) +
-      scale_linetype_manual("References", values = c("solid", "solid", "solid", "solid", "solid", "dashed", "dashed", "dashed"),
-                            breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments"),
+      scale_fill_discrete("References", breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments"),
                             labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments"))
   })
 }
