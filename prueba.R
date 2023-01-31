@@ -44,27 +44,27 @@ ui <- navbarPage(
   title="Contributions Types in Science",
   
   # Tab panels
-  tabPanel("By age",
-  h2("Contribution type and author position by academic age"),
-  sidebarLayout(
-    sidebarPanel(
-      sliderInput("age", label = h4("Academic age"), min = 1, max = 25, value = c(10, 15)),
-      h4("Contribution type"),
-      checkboxInput("contribution_WR1", label = "Wrote paper", value = TRUE),
-      checkboxInput("contribution_AD1", label = "Analyzed data", value = TRUE),
-      checkboxInput("contribution_CE1", label = "Conceived experiments", value = TRUE),
-      checkboxInput("contribution_CT1", label = "Contributed tools", value = TRUE),
-      checkboxInput("contribution_PE1", label = "Performed experiments", value = TRUE),
-      h4("Author position"),
-      checkboxInput("position_first1", label = "1st author", value = TRUE),
-      checkboxInput("position_middle1", label = "2nd/middle author", value = TRUE),
-      checkboxInput("position_last1", label = "Last author", value = TRUE)),
+  #tabPanel("By age",
+  #h2("Contribution type and author position by academic age"),
+  #sidebarLayout(
+    #sidebarPanel(
+      #sliderInput("age", label = h4("Academic age"), min = 1, max = 25, value = c(10, 15)),
+      #h4("Contribution type"),
+      #checkboxInput("contribution_WR1", label = "Wrote paper", value = TRUE),
+      #checkboxInput("contribution_AD1", label = "Analyzed data", value = TRUE),
+      #checkboxInput("contribution_CE1", label = "Conceived experiments", value = TRUE),
+      #checkboxInput("contribution_CT1", label = "Contributed tools", value = TRUE),
+      #checkboxInput("contribution_PE1", label = "Performed experiments", value = TRUE),
+      #h4("Author position"),
+      #checkboxInput("position_first1", label = "1st author", value = TRUE),
+      #checkboxInput("position_middle1", label = "2nd/middle author", value = TRUE),
+      #checkboxInput("position_last1", label = "Last author", value = TRUE)),
     
-    mainPanel(
-      plotOutput("contribution_position_age")
-      )
-    )
-  ),
+    #mainPanel(
+      #plotOutput("contribution_position_age")
+      #)
+    #)
+  #),
 
   tabPanel("By number of authors",
   h2("Contribution type and author position by number of authors"),
@@ -108,12 +108,12 @@ ui <- navbarPage(
   tabPanel("About",
   h2("About"),
   fluidRow(column(width=12,
-    HTML("The visualizations and data available here are part of the work <a href='https://doi.org/10.5281/zenodo.6974732'><b>The relation between contribution statements and academic age</b></a>, developed as part of the project <a href='https://compare-project.eu/about/'><b>COntextual Mapping of academic Pathways Analysis for Research Evaluation (COMPARE)</b></a> – PID2020-117007RA-I00."),
-    HTML("Preliminary results were presented at the <i>26th International Conference on Science and Technology Indicators: From Local Indicators to Global Applications</i> organized by the Faculty of Communication and Documentation (UGR) in collaboration with the European Network of Indicator Developers (ENID), which took place on 7-9th September, 2022, in Granada."),
+    HTML("The visualizations available here were developed using the <a href='https://zenodo.org/record/3891055/#.Y9jsEOzMLos'><b>dataset 1 on PLOS contribution and bibliometric data</b></a>, as part of the project <a href='https://compare-project.eu/about/'><b>COntextual Mapping of academic Pathways Analysis for Research Evaluation (COMPARE)</b></a> – PID2020-117007RA-I00."),
+    #HTML("Preliminary results were presented at the <i>26th International Conference on Science and Technology Indicators: From Local Indicators to Global Applications</i> organized by the Faculty of Communication and Documentation (UGR) in collaboration with the European Network of Indicator Developers (ENID), which took place on 7-9th September, 2022, in Granada."),
   h2("Authors"),
   fluidRow(
     column(width=6,
-      h3("Manuel Escabias"),
+      h3("Victoria Di Césare"),
         HTML("Completar")),
     column(width=6,
       h3("Nicolás Robinson-García"),
@@ -131,30 +131,30 @@ ui <- navbarPage(
 # Server logic
 server <- function(input, output) {
   
-  output$contribution_position_age <- renderPlot({
-    gather(data = df_grouped_age[which(df_grouped_age$p_age >= input$age[1] & df_grouped_age$p_age <= input$age[2]),],
-           key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) %>%
+  #output$contribution_position_age <- renderPlot({
+    #gather(data = df_grouped_age[which(df_grouped_age$p_age >= input$age[1] & df_grouped_age$p_age <= input$age[2]),],
+           #key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) %>%
       
-      {if (!input$contribution_WR1) filter(., key!='wrote_paper') else filter(.)} %>%
-      {if (!input$contribution_AD1) filter(., key!='analyzed_data') else filter(.)} %>%
-      {if (!input$contribution_CE1) filter(., key!='conceived_experiments') else filter(.)} %>%
-      {if (!input$contribution_CT1) filter(., key!='contributed_tools') else filter(.)} %>%
-      {if (!input$contribution_PE1) filter(., key!='performed_experiments') else filter(.)} %>%
-      {if (!input$position_first1) filter(., key!='au_first') else filter(.)} %>%
-      {if (!input$position_middle1) filter(., key!='au_middle') else filter(.)} %>%
-      {if (!input$position_last1) filter(., key!='au_last') else filter(.)} %>%
+      #{if (!input$contribution_WR1) filter(., key!='wrote_paper') else filter(.)} %>%
+      #{if (!input$contribution_AD1) filter(., key!='analyzed_data') else filter(.)} %>%
+      #{if (!input$contribution_CE1) filter(., key!='conceived_experiments') else filter(.)} %>%
+      #{if (!input$contribution_CT1) filter(., key!='contributed_tools') else filter(.)} %>%
+      #{if (!input$contribution_PE1) filter(., key!='performed_experiments') else filter(.)} %>%
+      #{if (!input$position_first1) filter(., key!='au_first') else filter(.)} %>%
+      #{if (!input$position_middle1) filter(., key!='au_middle') else filter(.)} %>%
+      #{if (!input$position_last1) filter(., key!='au_last') else filter(.)} %>%
       
-      ggplot() +
-      geom_line(aes(x = p_age, y = value, colour = key, linetype = key)) +
-      theme_minimal() +
-      xlab("Age") +
-      ylab("Count") +
-      scale_colour_discrete("References", breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
-                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author")) +
-      scale_linetype_manual("References", values = c("solid", "solid", "solid", "solid", "solid", "dashed", "dashed", "dashed"),
-                            breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
-                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author"))
-  })
+      #ggplot() +
+      #geom_line(aes(x = p_age, y = value, colour = key, linetype = key)) +
+      #theme_minimal() +
+      #xlab("Age") +
+      #ylab("Count") +
+      #scale_colour_discrete("References", breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
+                            #labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author")) +
+      #scale_linetype_manual("References", values = c("solid", "solid", "solid", "solid", "solid", "dashed", "dashed", "dashed"),
+                            #breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
+                            #labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author"))
+  #})
 
   output$contribution_position_number_authors <- renderPlot({
     gather(data = df_grouped_number_authors[which(df_grouped_number_authors$n_authors >= input$number_authors[1] & df_grouped_number_authors$n_authors <= input$number_authors[2]),],
