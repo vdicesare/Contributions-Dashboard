@@ -26,13 +26,29 @@ df_filtered <- filter(df, n_authors > 1 & p_age > 0 & p_age < 50)
 df_grouped_age <- aggregate(cbind(wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) ~ p_age,
                             data = df_filtered, FUN = sum)
 
-# Group contributions and positions by n_authors
-df_grouped_number_authors <- aggregate(cbind(wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) ~ n_authors,
+# Group contributions by n_authors
+df_grouped_number_authors <- aggregate(cbind(wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments) ~ n_authors,
                                        data = df_filtered, FUN = sum)
 
-# Group contributions by au_position
-df_grouped_position <- aggregate(cbind(wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments) ~ au_position,
+# Compute proportion of authors in each contribution category per n_authors in df_grouped_number_authors
+df_grouped_number_authors$total_cases <- df_grouped_number_authors$wrote_paper + df_grouped_number_authors$analyzed_data + df_grouped_number_authors$conceived_experiments + df_grouped_number_authors$contributed_tools + df_grouped_number_authors$performed_experiments
+df_grouped_number_authors$proportion_WR <- df_grouped_number_authors$wrote_paper / df_grouped_number_authors$total_cases
+df_grouped_number_authors$proportion_AD <- df_grouped_number_authors$analyzed_data / df_grouped_number_authors$total_cases
+df_grouped_number_authors$proportion_CE <- df_grouped_number_authors$conceived_experiments / df_grouped_number_authors$total_cases
+df_grouped_number_authors$proportion_CT <- df_grouped_number_authors$contributed_tools / df_grouped_number_authors$total_cases
+df_grouped_number_authors$proportion_PE <- df_grouped_number_authors$performed_experiments / df_grouped_number_authors$total_cases
+
+# Group contributions by p_age and au_position
+df_grouped_age_position <- aggregate(cbind(wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments) ~ au_position + p_age,
                                        data = df_filtered, FUN = sum)
+
+# Compute proportion of authors in each contribution category per age and position in df_grouped_age_position
+df_grouped_age_position$total_cases <- df_grouped_age_position$wrote_paper + df_grouped_age_position$analyzed_data + df_grouped_age_position$conceived_experiments + df_grouped_age_position$contributed_tools + df_grouped_age_position$performed_experiments
+df_grouped_age_position$proportion_WR <- df_grouped_age_position$wrote_paper / df_grouped_age_position$total_cases
+df_grouped_age_position$proportion_AD <- df_grouped_age_position$analyzed_data / df_grouped_age_position$total_cases
+df_grouped_age_position$proportion_CE <- df_grouped_age_position$conceived_experiments / df_grouped_age_position$total_cases
+df_grouped_age_position$proportion_CT <- df_grouped_age_position$contributed_tools / df_grouped_age_position$total_cases
+df_grouped_age_position$proportion_PE <- df_grouped_age_position$performed_experiments / df_grouped_age_position$total_cases
 
 
 ### APP
@@ -67,7 +83,7 @@ ui <- navbarPage(
   #),
 
   tabPanel("By number of authors",
-  h2("Contribution type and author position by number of authors"),
+  h2("Contribution type by number of authors"),
   sidebarLayout(
     sidebarPanel(
       sliderInput("number_authors", label = h4("Number of authors"), min = 2, max = 46, value = c(15, 30)),
@@ -76,22 +92,23 @@ ui <- navbarPage(
       checkboxInput("contribution_AD2", label = "Analyzed data", value = TRUE),
       checkboxInput("contribution_CE2", label = "Conceived experiments", value = TRUE),
       checkboxInput("contribution_CT2", label = "Contributed tools", value = TRUE),
-      checkboxInput("contribution_PE2", label = "Performed experiments", value = TRUE),
-      h4("Author position"),
-      checkboxInput("position_first2", label = "1st author", value = TRUE),
-      checkboxInput("position_middle2", label = "2nd/middle author", value = TRUE),
-      checkboxInput("position_last2", label = "Last author", value = TRUE)),
+      checkboxInput("contribution_PE2", label = "Performed experiments", value = TRUE)),
+      #h4("Author position"),
+      #checkboxInput("position_first2", label = "1st author", value = TRUE),
+      #checkboxInput("position_middle2", label = "2nd/middle author", value = TRUE),
+      #checkboxInput("position_last2", label = "Last author", value = TRUE)),
              
     mainPanel(
-      plotOutput("contribution_position_number_authors")
+      plotOutput("contribution_number_authors")
       )
     )
   ),
   
-  tabPanel("By author position",
-  h2("Contribution type by author position"),
+  tabPanel("By age and author position",
+  h2("Contribution type by age and author position"),
   sidebarLayout(
     sidebarPanel(
+      sliderInput("age", label = h4("Academic age"), min = 1, max = 25, value = c(10, 15)),
       h4("Contribution type"),
       checkboxInput("contribution_WR3", label = "Wrote paper", value = TRUE),
       checkboxInput("contribution_AD3", label = "Analyzed data", value = TRUE),
@@ -100,7 +117,7 @@ ui <- navbarPage(
       checkboxInput("contribution_PE3", label = "Performed experiments", value = TRUE)),
              
     mainPanel(
-     plotOutput("contribution_position")
+     plotOutput("contribution_age_position")
      )
     )
   ),
@@ -156,46 +173,47 @@ server <- function(input, output) {
                             #labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author"))
   #})
 
-  output$contribution_position_number_authors <- renderPlot({
+  output$contribution_number_authors <- renderPlot({
     gather(data = df_grouped_number_authors[which(df_grouped_number_authors$n_authors >= input$number_authors[1] & df_grouped_number_authors$n_authors <= input$number_authors[2]),],
-           key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments, au_first, au_middle, au_last) %>%
+           key, value, proportion_WR, proportion_AD, proportion_CE, proportion_CT, proportion_PE) %>%
       
-      {if (!input$contribution_WR2) filter(., key!='wrote_paper') else filter(.)} %>%
-      {if (!input$contribution_AD2) filter(., key!='analyzed_data') else filter(.)} %>%
-      {if (!input$contribution_CE2) filter(., key!='conceived_experiments') else filter(.)} %>%
-      {if (!input$contribution_CT2) filter(., key!='contributed_tools') else filter(.)} %>%
-      {if (!input$contribution_PE2) filter(., key!='performed_experiments') else filter(.)} %>%
-      {if (!input$position_first2) filter(., key!='au_first') else filter(.)} %>%
-      {if (!input$position_middle2) filter(., key!='au_middle') else filter(.)} %>%
-      {if (!input$position_last2) filter(., key!='au_last') else filter(.)} %>%
+      {if (!input$contribution_WR2) filter(., key!='proportion_WR') else filter(.)} %>%
+      {if (!input$contribution_AD2) filter(., key!='proportion_AD') else filter(.)} %>%
+      {if (!input$contribution_CE2) filter(., key!='proportion_CE') else filter(.)} %>%
+      {if (!input$contribution_CT2) filter(., key!='proportion_CT') else filter(.)} %>%
+      {if (!input$contribution_PE2) filter(., key!='proportion_PE') else filter(.)} %>%
+      #{if (!input$position_first2) filter(., key!='au_first') else filter(.)} %>%
+      #{if (!input$position_middle2) filter(., key!='au_middle') else filter(.)} %>%
+      #{if (!input$position_last2) filter(., key!='au_last') else filter(.)} %>%
       
       ggplot() +
       geom_line(aes(x = n_authors, y = value, colour = key, linetype = key)) +
       theme_minimal() +
       xlab("Number of authors") +
-      ylab("Count") +
-      scale_colour_discrete("References", breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
-                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author")) +
-      scale_linetype_manual("References", values = c("solid", "solid", "solid", "solid", "solid", "dashed", "dashed", "dashed"),
-                            breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments", "au_first", "au_middle", "au_last"),
-                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments", "1st author", "2nd/middle author", "Last author"))
+      ylab("Proportion") +
+      scale_colour_discrete("References", breaks = c("proportion_WR", "proportion_AD", "proportion_CE", "proportion_CT", "proportion_PE"),
+                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments")) +
+      scale_linetype_manual("References", values = c("solid", "solid", "solid", "solid", "solid"),
+                            breaks = c("proportion_WR", "proportion_AD", "proportion_CE", "proportion_CT", "proportion_PE"),
+                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments"))
   })
 
-  output$contribution_position <- renderPlot({
-    gather(data = df_grouped_position, key, value, wrote_paper, analyzed_data, conceived_experiments, contributed_tools, performed_experiments) %>%
+  output$contribution_age_position <- renderPlot({
+    gather(data = df_grouped_age_position[which(df_grouped_age_position$p_age >= input$age[1] & df_grouped_age_position$p_age <= input$age[2]),],
+           key, value, proportion_WR, proportion_AD, proportion_CE, proportion_CT, proportion_PE) %>%
       
-      {if (!input$contribution_WR3) filter(., key!='wrote_paper') else filter(.)} %>%
-      {if (!input$contribution_AD3) filter(., key!='analyzed_data') else filter(.)} %>%
-      {if (!input$contribution_CE3) filter(., key!='conceived_experiments') else filter(.)} %>%
-      {if (!input$contribution_CT3) filter(., key!='contributed_tools') else filter(.)} %>%
-      {if (!input$contribution_PE3) filter(., key!='performed_experiments') else filter(.)} %>%
+      {if (!input$contribution_WR3) filter(., key!='proportion_WR') else filter(.)} %>%
+      {if (!input$contribution_AD3) filter(., key!='proportion_AD') else filter(.)} %>%
+      {if (!input$contribution_CE3) filter(., key!='proportion_CE') else filter(.)} %>%
+      {if (!input$contribution_CT3) filter(., key!='proportion_CT') else filter(.)} %>%
+      {if (!input$contribution_PE3) filter(., key!='proportion_PE') else filter(.)} %>%
       
       ggplot(aes(x = au_position, y = value, fill = key)) +
       geom_bar(stat = "identity", position = "dodge") +
       theme_minimal() +
       xlab("Author position") +
-      ylab("Count") +
-      scale_fill_discrete("References", breaks = c("wrote_paper", "analyzed_data", "conceived_experiments", "contributed_tools", "performed_experiments"),
+      ylab("Proportion") +
+      scale_fill_discrete("References", breaks = c("proportion_WR", "proportion_AD", "proportion_CE", "proportion_CT", "proportion_PE"),
                             labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments"))
   })
 }
