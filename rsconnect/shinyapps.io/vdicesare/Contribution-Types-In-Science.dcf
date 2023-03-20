@@ -5,9 +5,9 @@ account: vdicesare
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 8614907
-bundleId: 6981701
+bundleId: 6981859
 url: https://vdicesare.shinyapps.io/Contribution-Types-In-Science/
-when: 1679311145.26707
-lastSyncTime: 1679311145.26709
+when: 1679314193.27676
+lastSyncTime: 1679314193.27678
 asMultiple: FALSE
 asStatic: FALSE
