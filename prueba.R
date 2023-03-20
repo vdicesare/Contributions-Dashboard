@@ -74,8 +74,10 @@ ui <- navbarPage(
     mainPanel(
       plotOutput("contribution_number_authors")
       )
-    )
-  ),
+    ),
+  
+  hr(),
+  helpText(HTML("By Victoria Di Césare & Nicolás Robinson-García | <a href='https://github.com/VictoriaDiCesare/Contributions-Dashboard'>GitHub</a>"))),
   
   tabPanel("By age and author position",
   h2("Contribution type by age and author position"),
@@ -92,8 +94,10 @@ ui <- navbarPage(
     mainPanel(
      plotOutput("contribution_age_position")
      )
-    )
-  ),
+    ),
+  
+  hr(),
+  helpText(HTML("By Victoria Di Césare & Nicolás Robinson-García | <a href='https://github.com/VictoriaDiCesare/Contributions-Dashboard'>GitHub</a>"))),
 
   tabPanel("About",
   h2("About"),
@@ -103,18 +107,21 @@ ui <- navbarPage(
   fluidRow(
     column(width=6,
       h3("Victoria Di Césare"),
-        HTML("Completar")),
+        HTML("<a href='https://sites.google.com/view/vdicesare'>Victoria Di Césare</a> is a PhD student in Social Sciences at the University of Granada (Spain), supported by a FPI fellowship awarded by the Spanish Ministry of Science and Innovation. She is a member of the scientific teams at EC3 Research Group and COMPARE Project. Her academic interests focus on Scientometrics and Social Studies of Science, specifically in relation to the theoretical and empirical characterization of science as a social activity.")),
     column(width=6,
       h3("Nicolás Robinson-García"),
-        HTML('Nicolás Robinson-García is a researcher in the field of bibliometrics and research evaluation. He currently enjoys a Ramón y Cajal grant at the University of Granada (Spain). He worked previously as a Marie Sklodowska-Curie Fellow at Delft Institute of Applied Mathematics, TU Delft (Netherlands), the School of Public Policy at Georgia Institute of Technology and at INGENIO (CSIC-UPV) in Spain. He holds a PhD on Social Sciences at the University of Granada. He is member of the Steering Committee of the European Summer School for Scientometrics. He is Associate Editor on Open Science and New Metrics of the journal Scientometrics and member of the editorial board of Research Evaluation and Quantitative Science Studies.'))),
+        HTML("<a href='https://nrobinsongarcia.com/'>Nicolás Robinson-García</a> is a researcher in the field of bibliometrics and research evaluation. He currently enjoys a Ramón y Cajal grant at the University of Granada (Spain). He worked previously as a Marie Sklodowska-Curie Fellow at Delft Institute of Applied Mathematics, TU Delft (Netherlands), the School of Public Policy at Georgia Institute of Technology and at INGENIO (CSIC-UPV) in Spain. He holds a PhD on Social Sciences at the University of Granada. He is member of the Steering Committee of the European Summer School for Scientometrics. He is Associate Editor on Open Science and New Metrics of the journal Scientometrics and member of the editorial board of Research Evaluation and Quantitative Science Studies."))),
   fluidRow(column(width=12,
     tags$div(
       tags$img(src = 'https://raw.githubusercontent.com/Wences91/science-of-humanities/main/images/compare_logo.png', width=150, style='padding-right:25px'),
       tags$img(src = 'https://raw.githubusercontent.com/Wences91/science-of-humanities/main/images/ugr_logo.png', height=50, style='padding-right:25px'),
       style='padding-top:75px;text-align:right')))
       )
-    )
-  )
+    ),
+  
+  hr(),
+  helpText(HTML("By Victoria Di Césare & Nicolás Robinson-García | <a href='https://github.com/VictoriaDiCesare/Contributions-Dashboard'>GitHub</a>")))
+
 ) 
 
 # Server logic
