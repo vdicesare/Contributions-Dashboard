@@ -186,15 +186,12 @@ server <- function(input, output) {
       #{if (!input$position_middle2) filter(., key!='au_middle') else filter(.)} %>%
       #{if (!input$position_last2) filter(., key!='au_last') else filter(.)} %>%
       
-      ggplot() +
-      geom_line(aes(x = n_authors, y = value, colour = key, linetype = key)) +
+      ggplot(aes(x = n_authors, y = value, fill = key)) +
+      geom_bar(stat = "identity", position = "dodge") +
       theme_minimal() +
       xlab("Number of authors") +
       ylab("Proportion") +
-      scale_colour_discrete("References", breaks = c("proportion_WR", "proportion_AD", "proportion_CE", "proportion_CT", "proportion_PE"),
-                            labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments")) +
-      scale_linetype_manual("References", values = c("solid", "solid", "solid", "solid", "solid"),
-                            breaks = c("proportion_WR", "proportion_AD", "proportion_CE", "proportion_CT", "proportion_PE"),
+      scale_fill_discrete("References", breaks = c("proportion_WR", "proportion_AD", "proportion_CE", "proportion_CT", "proportion_PE"),
                             labels = c("Wrote paper", "Analyzed data", "Conceived experiments", "Contributed tools", "Performed experiments"))
   })
 
