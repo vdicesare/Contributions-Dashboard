@@ -1,3 +1,4 @@
+library(curl)
 library(shiny)
 library(shinythemes)
 library(data.table)
